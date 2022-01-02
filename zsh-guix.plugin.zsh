@@ -20,8 +20,13 @@ alias gxsh="gx shell"
 alias gxe="gx environment"
 alias gxtm="gx time-machine"
 
+function gxup () {
+    guix pull
+    guix package -u
+}
+
 : {GUIX_CDIR:="$HOME/.config/guix"}
 
-gxrcon () {
+function gxrcon () {
     sudo guix system reconfigure "$GUIX_CDIR/$1.scm" -L "$GUIX_CDIR"
 }
