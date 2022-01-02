@@ -1,8 +1,22 @@
 alias gx="guix"
-alias gxs="gx search"
+function gxs () {
+    if [ $# -eq 0 ]; then
+	guix search; # Generates appropriate error
+	return;
+    fi;
+    guix search $@ | \
+	grep -P "(?<=name: ).*" --only-matching | \
+	fzf --border --preview "guix show {}";
+}
+function gxsi () {
+    PACKAGE="$(gxs $@)"
+    if [ ! -z $PACKAGE ]; then
+	guix install "$PACKAGE"
+    fi;
+}
 alias gxi="gx install"
 alias gxb="gx build"
-alias gxs="gx shell"
+alias gxsh="gx shell"
 alias gxe="gx environment"
 alias gxtm="gx time-machine"
 
