@@ -5,8 +5,9 @@ function gxs () {
 	return;
     fi;
     guix search $@ | \
-	grep -P "(?<=name: ).*" --only-matching | \
-	fzf --border --preview "guix show {}";
+	recsel -R name -U | \
+	grep -v "^$" | \
+	fzf +s --border --preview "guix show {}";
 }
 function gxsi () {
     PACKAGE="$(gxs $@)"
