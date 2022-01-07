@@ -15,6 +15,9 @@ function gxsi () {
 	guix install "$PACKAGE"
     fi;
 }
+function run () {
+    guix shell "$@" -- "$@"
+}
 alias gxi="gx install"
 alias gxb="gx build"
 alias gxsh="gx shell"
