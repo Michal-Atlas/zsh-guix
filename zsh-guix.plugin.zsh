@@ -16,7 +16,7 @@ function gxsi () {
     fi;
 }
 function run () {
-    guix shell "$@" -- "$@"
+    guix shell "$1" -- "$@"
 }
 alias gxi="gx install"
 alias gxb="gx build"
