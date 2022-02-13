@@ -1,36 +1,29 @@
 alias gx="guix"
-function gxs () {
+function gxp () {
     if [ $# -eq 0 ]; then
-	guix search; # Generates appropriate error
+	guix package; # Generates appropriate error
 	return;
     fi;
-    guix search $@ | \
-	recsel -R name -U | \
-	grep -v "^$" | \
-	fzf +s --border --preview "guix show {}";
-}
-function gxsi () {
-    PACKAGE="$(gxs $@)"
-    if [ ! -z $PACKAGE ]; then
-	guix install "$PACKAGE"
+    guix show $@ 2>/dev/null 1>/dev/null
+    if [ $? -eq 1 ]; then
+	PKG="$(
+	    guix search "$@" | \
+	    	 recsel -R name -U | \
+	    	 grep -v "^$" | \
+	    	 fzf +s --border --preview "guix show {}";
+	    )"
+	[ $? -eq 0 ] && guix install "$PKG";
+    else;
+	guix install "$@";
     fi;
 }
+
 function run () {
     guix shell "$1" -- "$@"
 }
+
 alias gxi="gx install"
 alias gxb="gx build"
 alias gxsh="gx shell"
-alias gxe="gx environment"
 alias gxtm="gx time-machine"
 
-function gxup () {
-    guix pull
-    guix package -u
-}
-
-: {GUIX_CDIR:="$HOME/.config/guix"}
-
-function gxrcon () {
-    sudo guix system reconfigure "$GUIX_CDIR/$1.scm" -L "$GUIX_CDIR"
-}
