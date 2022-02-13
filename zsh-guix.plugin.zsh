@@ -10,7 +10,11 @@ function gxp () {
 	    guix search "$@" | \
 	    	 recsel -R name -U | \
 	    	 grep -v "^$" | \
-	    	 fzf +s --border --preview "guix show {}";
+	    	 fzf +s \
+		     --border \
+		     --preview "guix show {}" \
+		     --preview-window=right:80%:wrap \
+		     ;
 	    )"
 	[ $? -eq 0 ] && guix install "$PKG";
     else;
