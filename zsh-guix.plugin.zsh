@@ -4,7 +4,7 @@ function gxp () {
 	guix package; # Generates appropriate error
 	return;
     fi;
-    guix show $@ 2>/dev/null 1>/dev/null
+    guix show "$@" 2>/dev/null 1>/dev/null
     if [ $? -eq 1 ]; then
 	PKG="$(
 	    guix search "$@" | \
