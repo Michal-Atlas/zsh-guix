@@ -22,6 +22,15 @@ function gxp () {
     fi;
 }
 
+function gxpatch () {
+    patchelf "$1" --set-rpath "/run/current-system/profile/lib:\
+/home/$USER/.guix-home/profile/lib\
+$(guix package --list-profiles | while read -r l; do printf ":%s/lib" "$l"; done)"
+    patchelf "$1" --set-interpreter "/run/current-system/profile/lib/ld-linux-x86-64.so.2"
+    printf "RPATH: %s\n" "$(patchelf "$1" --print-rpath)"
+    printf "LD: %s\n" "$(patchelf "$1" --print-interpreter)"
+}
+
 function run () {
     guix shell "$1" -- "$@"
 }
